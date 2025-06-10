@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "target": "ES5",
+    "lib": ["DOM", "ESNext"],
+    "module": "ESNext",
+    "jsx": "react",
+    "declaration": true,
+    "declarationDir": "./dist",
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,69 @@
+{
+  "name": "react-adblock-detecter",
+  "version": "1.0.0",
+  "description": "It is a lightweight React component that detects if an ad blocker is active in the user's browser. It allows developers to conditionally render UI elements or trigger custom actions when ad blocking is detected, enhancing user messaging or monetization strategies.",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    },
+    "./dist/*.css": "./dist/*.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npm run build:cjs && npm run build:esm && npm run copy-css",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build:esm": "tsc --project tsconfig.esm.json",
+    "copy-css": "cp ./src/*.css dist/",
+    "release": "standard-version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faraasat/react-adblock-detecter.git"
+  },
+  "keywords": [
+    "react",
+    "adblock",
+    "adblock",
+    "detection",
+    "react",
+    "adblock",
+    "detect",
+    "ad",
+    "blocker",
+    "detect",
+    "adblock",
+    "react",
+    "ad",
+    "blocker",
+    "adblocker",
+    "warning",
+    "react",
+    "component",
+    "monetization",
+    "conditional",
+    "rendering"
+  ],
+  "author": "Farasat Ali <63093876+faraasat@users.noreply.github.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/faraasat/react-adblock-detecter/issues"
+  },
+  "homepage": "https://github.com/faraasat/react-adblock-detecter#readme",
+  "peerDependencies": {
+    "react": ">=17.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "standard-version": "^9.5.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
