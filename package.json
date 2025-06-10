@@ -1,6 +1,6 @@
 {
   "name": "react-adblock-detecter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "It is a lightweight React component that detects if an ad blocker is active in the user's browser. It allows developers to conditionally render UI elements or trigger custom actions when ad blocking is detected, enhancing user messaging or monetization strategies.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
