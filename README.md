@@ -39,9 +39,9 @@ Access Demos at:
 
 [Demo](https://react-adblocker-detect.vercel.app/)
 
-[Demo Persistent](https://react-adblocker-detect.vercel.app/persitent)
+[Demo Persistent](https://react-adblocker-detect.vercel.app/persistent)
 
-[Demo Persistent With Polling](https://react-adblocker-detect.vercel.app/persitent-with-polling)
+[Demo Persistent With Polling](https://react-adblocker-detect.vercel.app/persistent-with-polling)
 
 ---
 

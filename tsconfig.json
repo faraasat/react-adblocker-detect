@@ -9,7 +9,7 @@
     "declarationDir": "./dist",
     "esModuleInterop": true,
     "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
