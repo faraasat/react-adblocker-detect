@@ -45,6 +45,14 @@ Access Demos at:
 
 ---
 
+## 📸 Screenshot
+
+![Modal 1](https://github.com/faraasat/react-adblocker-detect/blob/main/images/modal1.jpg)
+
+![Modal 2](https://github.com/faraasat/react-adblocker-detect/blob/main/images/modal2.jpg)
+
+---
+
 ## ✨ Features
 
 - Detects common adblockers
@@ -207,14 +215,6 @@ A custom React hook that returns `true` if adblocker is detected. Used internall
 ## 🗃 Local Storage
 
 This library stores a flag (`rad_adblocker`) in `localStorage` to avoid showing the modal again unnecessarily when not in persistent mode.
-
----
-
-## 📸 Screenshot
-
-![Modal 1](https://github.com/faraasat/react-adblocker-detect/blob/main/github-imgs/modal1.jpg)
-
-![Modal 2](https://github.com/faraasat/react-adblocker-detect/blob/main/github-imgs/modal2.jpg)
 
 ---
 
