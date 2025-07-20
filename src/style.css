@@ -1,0 +1,143 @@
+.rad-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+}
+
+.rad-modal .modal {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 10px
+}
+
+.rad-modal .modal2 {
+  max-height: calc(100vh - 40px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: 0.5px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rad-modal .modal h2 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+  color: #222;
+  font-weight: bold;
+}
+
+.rad-modal .modal p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.rad-modal .modal-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.rad-modal .modal-buttons button {
+  flex: 1 1 45%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.rad-modal .primary-btn {
+  background: #4f46e5;
+  color: white;
+}
+
+.rad-modal .primary-btn:hover {
+  background: #4338ca;
+}
+
+.rad-modal .secondary-btn {
+  background: #f3f4f6;
+  color: #333;
+}
+
+.rad-modal .secondary-btn:hover {
+  background: #e5e7eb;
+}
+
+.rad-modal .modal-step {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+  margin-top: 20px;
+}
+
+.rad-modal .step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: #f9fafb;
+  padding: 14px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.rad-modal .step img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.rad-modal .step-content {
+  flex: 1;
+}
+
+.rad-modal .step-title {
+  font-weight: bold;
+  color: #222;
+  font-size: 1rem;
+}
+
+.rad-modal .step-desc {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 4px;
+}
+
+.rad-modal .back-btn {
+  background: transparent;
+  border: none;
+  color: #4f46e5;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-top: 20px;
+  text-decoration: underline;
+}

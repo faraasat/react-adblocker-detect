@@ -1,67 +1,42 @@
 {
-  "name": "react-adblock-detecter",
-  "version": "1.0.1",
-  "description": "It is a lightweight React component that detects if an ad blocker is active in the user's browser. It allows developers to conditionally render UI elements or trigger custom actions when ad blocking is detected, enhancing user messaging or monetization strategies.",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
-    },
-    "./dist/*.css": "./dist/*.css"
+  "name": "react-adblocker-detect",
+  "version": "1.0.0",
+  "description": "A lightweight React component that detects if an ad blocker is active in the user's browser. It allows developers to conditionally render UI elements or trigger custom actions when ad blocking is detected, enhancing user messaging or monetization strategies.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faraasat/react-adblocker-detect.git"
   },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "npm run build:cjs && npm run build:esm && npm run copy-css",
-    "build:cjs": "tsc --project tsconfig.cjs.json",
-    "build:esm": "tsc --project tsconfig.esm.json",
-    "copy-css": "cp ./src/*.css dist/",
+    "build": "tsup && rm -rf dist/*.d.mts",
     "release": "standard-version"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/faraasat/react-adblock-detecter.git"
   },
   "keywords": [
     "react",
+    "nextjs",
+    "next.js",
     "adblock",
-    "adblock",
-    "detection",
-    "react",
-    "adblock",
-    "detect",
-    "ad",
-    "blocker",
-    "detect",
-    "adblock",
-    "react",
-    "ad",
-    "blocker",
     "adblocker",
-    "warning",
-    "react",
-    "component",
-    "monetization",
-    "conditional",
-    "rendering"
+    "adblock detector"
   ],
   "author": "Farasat Ali <63093876+faraasat@users.noreply.github.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/faraasat/react-adblock-detecter/issues"
-  },
-  "homepage": "https://github.com/faraasat/react-adblock-detecter#readme",
   "peerDependencies": {
-    "react": ">=17.0.0"
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "standard-version": "^9.5.0"
+    "@types/node": "^24.0.15",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "standard-version": "^9.5.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.0.0"
   },
   "publishConfig": {
     "access": "public"
