@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import { stepsGif } from "./static";
-
 import { IAdBlocker } from "../types";
 
 const Modal1: React.FC<{
@@ -44,7 +42,7 @@ const Modal2: React.FC<{
     <div className="modal modal2">
       <h2>{howToTitle}</h2>
       <img
-        src={stepsGif}
+        src={"https://github.com/faraasat/react-adblocker-detect/blob/main/images/demo.gif"}
         alt="steps gif"
         width="100%"
         height="auto"
