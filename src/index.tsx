@@ -16,6 +16,9 @@ const defaultConfig = {
     "We noticed you're using an ad blocker. Please disable it so we can keep the site running.",
   btn1Title: "How to disable adblocker",
   btn2Title: "I have disabled my adblocker",
+  goBackButtonTitle: "Go Back",
+  howToImageURL:
+    "https://github.com/faraasat/react-adblocker-detect/blob/main/images/demo.gif",
   howToSteps: [
     {
       title: "Step 1: Click on the Extensions Icon",

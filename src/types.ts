@@ -6,6 +6,8 @@ export interface IAdBlockerConfig {
   description: string;
   btn1Title: string;
   btn2Title: string;
+  goBackButtonTitle: string;
+  howToImageURL: string;
   howToSteps: Array<{ title: string; description: string }>;
   pollingTime?: number;
   initialInterval: number;
