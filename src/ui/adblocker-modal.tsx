@@ -36,13 +36,21 @@ const Modal1: React.FC<{
 const Modal2: React.FC<{
   howToTitle: string;
   howToSteps: Array<{ title: string; description: string }>;
+  goBackButtonTitle: string;
+  howToImageURL: string;
   onChangeModal: () => void;
-}> = ({ howToTitle, howToSteps, onChangeModal }) => {
+}> = ({
+  howToTitle,
+  howToSteps,
+  goBackButtonTitle,
+  howToImageURL,
+  onChangeModal,
+}) => {
   return (
     <div className="modal modal2">
       <h2>{howToTitle}</h2>
       <img
-        src={"https://github.com/faraasat/react-adblocker-detect/blob/main/images/demo.gif"}
+        src={howToImageURL}
         alt="steps gif"
         width="100%"
         height="auto"
@@ -63,7 +71,7 @@ const Modal2: React.FC<{
 
         <div className="modal-buttons">
           <button className="primary-btn" onClick={onChangeModal}>
-            Go Back
+            {goBackButtonTitle}
           </button>
         </div>
       </div>
@@ -91,7 +99,9 @@ export const AdblockerModal: React.FC<
       {!isFirst && (
         <Modal2
           howToTitle={config.howToTitle}
+          howToImageURL={config.howToImageURL}
           howToSteps={config.howToSteps}
+          goBackButtonTitle={config.goBackButtonTitle}
           onChangeModal={() => setIsFirst(true)}
         />
       )}
