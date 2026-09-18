@@ -18,7 +18,7 @@ const defaultConfig = {
   btn2Title: "I have disabled my adblocker",
   goBackButtonTitle: "Go Back",
   howToImageURL:
-    "https://github.com/faraasat/react-adblocker-detect/blob/main/images/demo.gif",
+    "https://raw.githubusercontent.com/faraasat/react-adblocker-detect/main/images/demo.gif",
   howToSteps: [
     {
       title: "Step 1: Click on the Extensions Icon",
@@ -60,21 +60,31 @@ const AdblockDetector: React.FC<Partial<IAdBlocker>> = ({
     React.useState(true);
   const isAdblock = useAdblock(shouldCheckForAdblocker);
 
+  // Tracked so every pending timer can be cancelled on unmount.
+  const timers = React.useRef<number[]>([]);
+  React.useEffect(
+    () => () => {
+      timers.current.forEach(clearTimeout);
+      timers.current = [];
+    },
+    []
+  );
+
   const onDisabledAdblocker = () => {
     if (!config.persistent) {
       setShowModal(false);
-      localStorage.setItem(ADBLOCKER_KEY, "true");
+      if (config.persistSetting) {
+        localStorage.setItem(ADBLOCKER_KEY, "true");
+      }
     } else {
       if (config.pollingTime && config.pollingTime > 0) {
         setShowModal(false);
-        const timeout = setTimeout(() => {
+        const timeout = window.setTimeout(() => {
           setShouldCheckForAdblocker(true);
-          const timeout2 = setTimeout(() => {
-            setShowModal(true);
-            clearTimeout(timeout2);
-          }, 0);
-          clearTimeout(timeout);
+          const timeout2 = window.setTimeout(() => setShowModal(true), 0);
+          timers.current.push(timeout2);
         }, config.pollingTime);
+        timers.current.push(timeout);
       } else {
         setShouldCheckForAdblocker(true);
       }
@@ -83,14 +93,16 @@ const AdblockDetector: React.FC<Partial<IAdBlocker>> = ({
 
   useEffect(() => {
     if (!isFirstIteration) {
-      const isAdblocker = localStorage.getItem(ADBLOCKER_KEY);
+      const isAdblocker = config.persistSetting
+        ? localStorage.getItem(ADBLOCKER_KEY)
+        : null;
 
       if (isAdblocker == "true") {
         setIsFirstIteration(true);
         return;
       }
 
-      let timeout = setTimeout(() => {
+      const timeout = window.setTimeout(() => {
         setShowModal(true);
         setIsFirstIteration(true);
       }, config.initialInterval);
@@ -99,7 +111,7 @@ const AdblockDetector: React.FC<Partial<IAdBlocker>> = ({
         clearTimeout(timeout);
       };
     }
-  }, []);
+  }, [isFirstIteration, config.initialInterval, config.persistSetting]);
 
   return (
     <React.Fragment>

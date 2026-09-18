@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { IAdBlocker } from "../types";
+import { ResolvedAdBlockerConfig } from "../types";
 
 const Modal1: React.FC<{
   title: string;
@@ -79,9 +79,10 @@ const Modal2: React.FC<{
   );
 };
 
-export const AdblockerModal: React.FC<
-  IAdBlocker & { onDisabledAdblocker: () => void }
-> = ({ config, onDisabledAdblocker }) => {
+export const AdblockerModal: React.FC<{
+  config: ResolvedAdBlockerConfig;
+  onDisabledAdblocker: () => void;
+}> = ({ config, onDisabledAdblocker }) => {
   const [isFirst, setIsFirst] = useState(true);
 
   return (
