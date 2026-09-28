@@ -70,6 +70,8 @@
     "react-dom": ">=17.0.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.55.0",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.7",
@@ -84,8 +86,7 @@
     "standard-version": "^9.5.0",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",
-    "vitest": "^3.2.4",
-    "@playwright/test": "^1.55.0"
+    "vitest": "^3.2.4"
   },
   "publishConfig": {
     "access": "public",
