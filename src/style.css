@@ -1,143 +1,242 @@
-.rad-modal {
+/*
+ * react-adblocker-detect
+ *
+ * Every colour is a custom property, so the whole modal can be themed from
+ * the `theme` config option (or your own CSS) without overriding rules.
+ */
+
+.rad-overlay {
+  --rad-bg: #ffffff;
+  --rad-fg: #111827;
+  --rad-muted: #4b5563;
+  --rad-primary: #4f46e5;
+  --rad-primary-fg: #ffffff;
+  --rad-secondary: #f3f4f6;
+  --rad-secondary-fg: #1f2937;
+  --rad-overlay: rgba(9, 9, 11, 0.55);
+  --rad-radius: 16px;
+  --rad-max-width: 480px;
+  --rad-border: rgba(0, 0, 0, 0.08);
+
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(6px);
-  background-color: rgba(0, 0, 0, 0.4);
+  inset: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999999;
+  padding: 16px;
+  background-color: var(--rad-overlay);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  overscroll-behavior: contain;
+  font-family: inherit;
 }
 
-.rad-modal .modal {
-  background: white;
-  border-radius: 16px;
-  padding: 30px;
-  width: 90%;
-  max-width: 480px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.3s ease-in-out;
+/* ── Dark scheme ───────────────────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  .rad-overlay:not(.rad-scheme--light) {
+    --rad-bg: #16181d;
+    --rad-fg: #f4f4f5;
+    --rad-muted: #a1a1aa;
+    --rad-secondary: #26282f;
+    --rad-secondary-fg: #f4f4f5;
+    --rad-overlay: rgba(0, 0, 0, 0.65);
+    --rad-border: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.rad-overlay.rad-scheme--dark {
+  --rad-bg: #16181d;
+  --rad-fg: #f4f4f5;
+  --rad-muted: #a1a1aa;
+  --rad-secondary: #26282f;
+  --rad-secondary-fg: #f4f4f5;
+  --rad-overlay: rgba(0, 0, 0, 0.65);
+  --rad-border: rgba(255, 255, 255, 0.1);
+}
+
+/* ── Positioning ───────────────────────────────────────────────────────── */
+
+.rad-overlay--center       { align-items: center;      justify-content: center; }
+.rad-overlay--top          { align-items: flex-start;  justify-content: center; }
+.rad-overlay--bottom       { align-items: flex-end;    justify-content: center; }
+.rad-overlay--top-left     { align-items: flex-start;  justify-content: flex-start; }
+.rad-overlay--top-right    { align-items: flex-start;  justify-content: flex-end; }
+.rad-overlay--bottom-left  { align-items: flex-end;    justify-content: flex-start; }
+.rad-overlay--bottom-right { align-items: flex-end;    justify-content: flex-end; }
+
+/* ── Modal ─────────────────────────────────────────────────────────────── */
+
+.rad-modal {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--rad-max-width);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  padding: 28px;
+  border-radius: var(--rad-radius);
+  background: var(--rad-bg);
+  color: var(--rad-fg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+  animation: rad-in 0.22s ease-out;
+}
+
+@keyframes rad-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Honour a reduced-motion preference. */
+@media (prefers-reduced-motion: reduce) {
+  .rad-modal { animation: none; }
+}
+
+.rad-modal *,
+.rad-modal *::before,
+.rad-modal *::after { box-sizing: border-box; }
+
+.rad-title {
+  margin: 0 0 8px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--rad-fg);
+}
+
+.rad-desc {
+  margin: 0 0 20px;
+  font-size: 0.975rem;
+  line-height: 1.6;
+  color: var(--rad-muted);
+}
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+
+.rad-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.rad-btn {
+  flex: 1 1 180px;
+  padding: 11px 16px;
+  border: none;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s ease, background-color 0.15s ease;
+}
+
+.rad-btn:hover { filter: brightness(0.94); }
+
+.rad-btn:focus-visible {
+  outline: 2px solid var(--rad-primary);
+  outline-offset: 2px;
+}
+
+.rad-btn--primary   { background: var(--rad-primary);   color: var(--rad-primary-fg); }
+.rad-btn--secondary { background: var(--rad-secondary); color: var(--rad-secondary-fg); }
+
+.rad-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--rad-muted);
+  cursor: pointer;
+}
+
+.rad-close:hover { background: var(--rad-secondary); color: var(--rad-fg); }
+
+.rad-close:focus-visible {
+  outline: 2px solid var(--rad-primary);
+  outline-offset: 2px;
+}
+
+/* ── How-to ────────────────────────────────────────────────────────────── */
+
+.rad-figure {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  border: 1px solid var(--rad-border);
+}
+
+.rad-steps {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px
+  gap: 10px;
 }
 
-.rad-modal .modal2 {
-  max-height: calc(100vh - 40px);
-  overflow-y: scroll;
-  overflow-x: hidden;
-  scrollbar-width: 0.5px;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.rad-modal .modal h2 {
-  font-size: 1.6rem;
-  margin-bottom: 10px;
-  color: #222;
-  font-weight: bold;
-}
-
-.rad-modal .modal p {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 20px;
-}
-
-.rad-modal .modal-buttons {
+.rad-step {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap;
-}
-
-.rad-modal .modal-buttons button {
-  flex: 1 1 45%;
-  padding: 12px 16px;
-  border-radius: 10px;
-  border: none;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.rad-modal .primary-btn {
-  background: #4f46e5;
-  color: white;
-}
-
-.rad-modal .primary-btn:hover {
-  background: #4338ca;
-}
-
-.rad-modal .secondary-btn {
-  background: #f3f4f6;
-  color: #333;
-}
-
-.rad-modal .secondary-btn:hover {
-  background: #e5e7eb;
-}
-
-.rad-modal .modal-step {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  text-align: left;
-  margin-top: 20px;
-}
-
-.rad-modal .step {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  background: #f9fafb;
-  padding: 14px;
+  padding: 12px 14px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: var(--rad-secondary);
+  text-align: left;
 }
 
-.rad-modal .step img {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  object-fit: cover;
-  flex-shrink: 0;
+.rad-step__index {
+  flex: 0 0 24px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--rad-primary);
+  color: var(--rad-primary-fg);
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
-.rad-modal .step-content {
-  flex: 1;
+.rad-step__body { display: flex; flex-direction: column; gap: 2px; }
+
+.rad-step__title {
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: var(--rad-secondary-fg);
 }
 
-.rad-modal .step-title {
-  font-weight: bold;
-  color: #222;
-  font-size: 1rem;
+.rad-step__desc {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--rad-muted);
 }
 
-.rad-modal .step-desc {
-  font-size: 0.9rem;
-  color: #555;
-  margin-top: 4px;
-}
+/* ── Small screens ─────────────────────────────────────────────────────── */
 
-.rad-modal .back-btn {
-  background: transparent;
-  border: none;
-  color: #4f46e5;
-  font-size: 0.95rem;
-  cursor: pointer;
-  margin-top: 20px;
-  text-decoration: underline;
+@media (max-width: 480px) {
+  .rad-overlay { padding: 0; align-items: flex-end; }
+
+  .rad-modal {
+    max-width: none;
+    max-height: 88dvh;
+    padding: 22px 18px calc(22px + env(safe-area-inset-bottom));
+    /* Sheet-style on phones: full width, rounded only at the top. */
+    border-radius: var(--rad-radius) var(--rad-radius) 0 0;
+    animation: rad-sheet-in 0.24s ease-out;
+  }
+
+  @keyframes rad-sheet-in {
+    from { transform: translateY(100%); }
+    to   { transform: none; }
+  }
+
+  .rad-title { font-size: 1.2rem; }
+  .rad-btn { flex: 1 1 100%; }
 }

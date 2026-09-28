@@ -44,7 +44,7 @@ jobs:
         env:
           NEXT_PUBLIC_BASE_PATH: /react-adblocker-detect
           NEXT_PUBLIC_APTABASE_KEY: ${{ vars.APTABASE_APP_KEY || 'A-EU-4231409721' }}
-          NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
+          NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID || 'G-F35PMWTWG7' }}
         run: npm run build
 
       - name: Configure Pages

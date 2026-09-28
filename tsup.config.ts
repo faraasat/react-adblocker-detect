@@ -13,10 +13,12 @@ export default defineConfig({
   // used to get lost. Keeping it off makes the directive reliable.
   splitting: false,
 
-  // Libraries ship readable code. The consuming app's bundler minifies;
-  // shipping pre-minified code only breaks consumer sourcemaps and debugging.
+  // Libraries ship readable code — the consuming app's bundler minifies.
   minify: false,
-  sourcemap: true,
+
+  // Sourcemaps are deliberately not published: they were ~65% of the install
+  // footprint, and this build is already readable.
+  sourcemap: false,
 
   shims: false,
   // NOTE: do not enable tsup's `treeshake`. It runs an extra rollup pass
