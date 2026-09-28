@@ -13,8 +13,9 @@ export default defineConfig({
   // used to get lost. Keeping it off makes the directive reliable.
   splitting: false,
 
-  // Libraries ship readable code — the consuming app's bundler minifies.
-  minify: false,
+  // Minified: this is what actually ships to a visitor's browser, and it
+  // keeps the install footprint small.
+  minify: true,
 
   // Sourcemaps are deliberately not published: they were ~65% of the install
   // footprint, and this build is already readable.
