@@ -61,7 +61,9 @@
     "test:coverage": "vitest run --coverage",
     "release": "standard-version",
     "prepublishOnly": "npm run typecheck && npm run test -- --run && npm run build",
-    "example:dev": "npm run build && npm --prefix example install && npm --prefix example run dev"
+    "example:dev": "npm run build && npm --prefix example install && npm --prefix example run dev",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "peerDependencies": {
     "react": ">=17.0.0",
@@ -82,7 +84,8 @@
     "standard-version": "^9.5.0",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "@playwright/test": "^1.55.0"
   },
   "publishConfig": {
     "access": "public",
