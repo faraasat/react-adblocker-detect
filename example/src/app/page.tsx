@@ -163,7 +163,7 @@ export default function Home() {
 
       <section className="card">
         <h2>Usage</h2>
-        <pre>{`import { AdblockDetector } from "react-adblocker-detect";
+        <pre tabIndex={0}>{`import { AdblockDetector } from "react-adblocker-detect";
 import "react-adblocker-detect/style.css";
 
 <AdblockDetector
@@ -177,7 +177,7 @@ import "react-adblocker-detect/style.css";
 
       <section className="card">
         <h2>Just the hook</h2>
-        <pre>{`import { useAdblockDetection } from "react-adblocker-detect";
+        <pre tabIndex={0}>{`import { useAdblockDetection } from "react-adblocker-detect";
 
 const { isAdBlocked, isChecked, recheck } = useAdblockDetection();`}</pre>
       </section>
