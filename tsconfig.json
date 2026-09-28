@@ -1,16 +1,25 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
-    "target": "ES5",
-    "lib": ["DOM", "ESNext"],
+    "target": "ES2019",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "jsx": "react",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
     "declaration": true,
     "declarationDir": "./dist",
+    "outDir": "./dist",
+    "strict": true,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
     "esModuleInterop": true,
-    "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["vitest/globals"]
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "example"]
 }

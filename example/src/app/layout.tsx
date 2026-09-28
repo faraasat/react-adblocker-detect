@@ -1,24 +1,22 @@
 import type { Metadata } from "next";
-
-import "react-adblocker-detect/dist/index.css";
-
+import { Analytics } from "@/components/analytics";
+import "react-adblocker-detect/style.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Example App for react-adblock-detect",
+  title: "react-adblocker-detect — live demo",
   description:
-    "A lightweight React component that detects if an ad blocker is active in the user's browser. It allows developers to conditionally render UI elements or trigger custom actions when ad blocking is detected, enhancing user messaging or monetization strategies.",
+    "Detect ad blockers in React and ask visitors to disable them, with a built-in modal.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`antialiased`} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         {children}
+        <Analytics packageName="react-adblocker-detect" />
       </body>
     </html>
   );

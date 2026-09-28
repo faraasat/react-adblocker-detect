@@ -1,227 +1,296 @@
-# 📛 React Adblock Detector
+<p align="center">
+  <img src="https://raw.githubusercontent.com/faraasat/react-adblocker-detect/main/.github/assets/banner.svg" alt="react-adblocker-detect" width="100%" />
+</p>
 
-A lightweight, customizable React component that detects AdBlock usage and shows a user-friendly modal with instructions to disable it. Supports persistent detection and polling behavior.
+<p align="center">
+  Detect ad blockers in React and ask visitors to disable them — with a built-in, fully customizable modal.
+</p>
 
-![npm version](https://img.shields.io/npm/v/react-adblocker-detect.svg)
-![package size minified](https://img.shields.io/bundlephobia/min/react-adblocker-detect?style=plastic)
-[![](https://data.jsdelivr.com/v1/package/npm/react-adblocker-detect/badge)](https://www.jsdelivr.com/package/npm/react-adblocker-detect)
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+<p align="center">
+  <a href="https://www.npmjs.com/package/react-adblocker-detect"><img alt="npm version" src="https://img.shields.io/npm/v/react-adblocker-detect?color=cb3837&label=npm&logo=npm"></a>
+  <a href="https://www.npmjs.com/package/react-adblocker-detect"><img alt="downloads" src="https://img.shields.io/npm/dm/react-adblocker-detect?color=cb3837&label=downloads"></a>
+  <a href="https://bundlephobia.com/package/react-adblocker-detect"><img alt="bundle size" src="https://img.shields.io/bundlephobia/minzip/react-adblocker-detect?label=minzipped"></a>
+  <a href="https://github.com/faraasat/react-adblocker-detect/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/faraasat/react-adblocker-detect/actions/workflows/ci.yml/badge.svg"></a>
+  <img alt="types" src="https://img.shields.io/badge/types-included-3178c6?logo=typescript&logoColor=white">
+  <a href="https://github.com/faraasat/react-adblocker-detect/blob/main/LICENSE"><img alt="license" src="https://img.shields.io/npm/l/react-adblocker-detect?color=blue"></a>
+</p>
 
-![total downloads](https://img.shields.io/npm/dt/react-adblocker-detect.svg)
-![total downloads per year](https://img.shields.io/npm/dy/react-adblocker-detect.svg)
-![total downloads per week](https://img.shields.io/npm/dw/react-adblocker-detect.svg)
-![total downloads per month](https://img.shields.io/npm/dm/react-adblocker-detect.svg)
-
-[download-image]: https://img.shields.io/npm/dm/react-adblocker-detect.svg
-[download-url]: https://npmjs.org/package/react-adblocker-detect
-
-[![react-adblocker-detect](https://nodei.co/npm/react-adblocker-detect.png)](https://npmjs.org/package/react-adblocker-detect)
+<p align="center">
+  <a href="https://faraasat.github.io/react-adblocker-detect/"><b>Live demo</b></a> ·
+  <a href="https://www.npmjs.com/package/react-adblocker-detect">npm</a> ·
+  <a href="https://github.com/faraasat/react-adblocker-detect/blob/main/CHANGELOG.md">Changelog</a> ·
+  <a href="https://github.com/faraasat/react-adblocker-detect/issues">Issues</a>
+</p>
 
 ---
 
-## 📦 Installation
+## Why
+
+Ad-blocked visitors quietly cost you revenue, and most detection snippets
+either false-positive on flaky networks or ship a wall of jQuery. This is one
+component (plus hooks if you want your own UI): typed end to end, themeable,
+accessible, and with no runtime dependencies beyond React.
+
+## Installation
 
 ```bash
-npm i react-adblocker-detect
+npm install react-adblocker-detect
+```
 
+<details>
+<summary>yarn / pnpm / bun</summary>
+
+```bash
 yarn add react-adblocker-detect
-
-pnpm i react-adblocker-detect
-
+pnpm add react-adblocker-detect
 bun add react-adblocker-detect
 ```
+</details>
 
----
+**Peer dependencies:** `react >= 17`, `react-dom >= 17`.
 
-## ⚙️ Demo
-
-Access Demos at:
-
-[Demo](https://react-adblocker-detect.vercel.app/)
-
-[Demo Persistent](https://react-adblocker-detect.vercel.app/persistent)
-
-[Demo Persistent With Polling](https://react-adblocker-detect.vercel.app/persistent-with-polling)
-
----
-
-## 📸 Screenshot
-
-![Modal 1](https://github.com/faraasat/react-adblocker-detect/blob/main/images/modal1.jpg)
-
-![Modal 2](https://github.com/faraasat/react-adblocker-detect/blob/main/images/modal2.jpg)
-
----
-
-## ✨ Features
-
-- Detects common adblockers
-- Beautiful modal UI with step-by-step disable instructions
-- Persistent and polling behavior options
-- Fully configurable via props
-- Written in TypeScript
-
----
-
-## 🚀 Usage
-
-### For React/Vite
+## Quick start
 
 ```tsx
-// app.tsx or main.tsx
-import React from "react";
+import { AdblockDetector } from "react-adblocker-detect";
+import "react-adblocker-detect/style.css";
 
-import { AdblockDetector } from "react-adblock-detector";
-
-import "react-adblock-detector/dist/index.css";
-
-const App = () => {
+export default function Layout({ children }) {
   return (
-    <div>
-      <AdblockDetector
-        config={{
-          persistent: true,
-          pollingTime: 10000, // in milliseconds
-          title: "AdBlocker Detected!",
-        }}
-      />
-    </div>
-  );
-};
-
-export default App;
-```
-
-### For Next.js (Pages Router)
-
-```jsx
-// _app.tsx
-import React from "react";
-import type { AppProps } from "next/app";
-import { CookieConsent } from "react-consent-management-banner";
-
-import "react-consent-management-banner/dist/index.css";
-
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <React.Fragment>
-      <Component {...pageProps} />
-
-      <AdblockDetector
-        config={{
-          persistent: true,
-          pollingTime: 10000, // in milliseconds
-          title: "AdBlocker Detected!",
-        }}
-      />
-    </React.Fragment>
+    <>
+      {children}
+      <AdblockDetector />
+    </>
   );
 }
 ```
 
-### For Next.js App Router
+The component renders nothing until a blocker is actually detected, then
+portals an accessible dialog into `document.body`.
+
+> **Next.js App Router:** the package ships the `"use client"` directive, so it
+> imports straight into a server component.
+
+## How detection works
+
+Two independent signals, combined:
+
+| Method | How | Trade-off |
+| --- | --- | --- |
+| **bait** | Inserts an ad-shaped element and checks whether it was hidden or collapsed. | Reliable. Needs no network, so it is accurate offline, behind a strict CSP, and on corporate proxies. |
+| **request** | `HEAD`s a well-known ad script URL and looks for a redirect or refusal. | Catches network-level blockers (Pi-hole, DNS filtering) that leave the DOM alone. |
+
+Default is `"both"`, where the **bait check is authoritative**: the network
+probe contributes only an explicit redirect, never a mere failure. That matters
+because a refused request has plenty of innocent causes — captive portals,
+firewalls, offline, strict CSP — and counting those as a block is the main
+source of false positives in naive detectors.
+
+In `"request"`-only mode a failure does count, but only while the browser
+reports itself **online**.
 
 ```tsx
-// layout.tsx
-import React from "react";
+<AdblockDetector config={{ detection: { method: "bait" } }} />
+```
 
-import { AdblockDetector } from "react-adblock-detector";
+This is still a heuristic. Treat it as a strong hint, and never gate essential
+functionality behind it.
 
-import "react-adblock-detector/dist/index.css";
+## Hooks
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html>
-      <body>
-        {children}
-        <AdblockDetector
-          config={{
-            persistent: true,
-            pollingTime: 10000, // in milliseconds
-            title: "AdBlocker Detected!",
-          }}
-        />
-      </body>
-    </html>
-  );
+### `useAdblock(enabled?)`
+
+Boolean, for the simple case:
+
+```tsx
+import { useAdblock } from "react-adblocker-detect";
+
+const isBlocked = useAdblock();
+```
+
+### `useAdblockDetection(options?)`
+
+Full state plus a manual re-check:
+
+```tsx
+import { useAdblockDetection } from "react-adblocker-detect";
+
+const { isAdBlocked, isChecked, recheck } = useAdblockDetection({
+  method: "bait",
+});
+
+if (!isChecked) return <Spinner />;
+```
+
+| Returns | Type | Description |
+| --- | --- | --- |
+| `isAdBlocked` | `boolean` | Whether a blocker was detected. |
+| `isChecked` | `boolean` | `false` until the first check completes — use it to avoid flashing UI. |
+| `recheck` | `() => Promise<boolean>` | Run detection again. |
+
+## Configuration
+
+Every field is optional. `theme` and `detection` are merged one level deep, so
+overriding one field keeps its siblings.
+
+### Behaviour
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `persistent` | `boolean` | `false` | Keep re-checking instead of accepting a dismissal. |
+| `persistSetting` | `boolean` | `true` | Remember a dismissal in `localStorage`. |
+| `pollingTime` | `number` | — | With `persistent`, ms before re-checking. |
+| `initialInterval` | `number` | `200` | Delay before the modal may first appear. |
+| `dismissible` | `boolean` | `true` | Show a close button and allow Escape. |
+| `closeOnOverlayClick` | `boolean` | `false` | Close when the backdrop is clicked. |
+| `detection` | `AdblockDetectionOptions` | `{}` | See above. |
+
+### Presentation
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `position` | `"center" \| "top" \| "bottom" \| "top-left" \| "top-right" \| "bottom-left" \| "bottom-right"` | `"center"` | Where the dialog sits. |
+| `zIndex` | `number` | `999999` | Overlay stacking order. |
+| `colorScheme` | `"auto" \| "light" \| "dark"` | `"auto"` | `auto` follows `prefers-color-scheme`. |
+| `theme` | `IAdBlockerTheme` | `{}` | Colour overrides (below). |
+| `className` | `string` | — | Extra class on the overlay. |
+
+### Copy
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `title` / `description` | `string` | First screen. |
+| `btn1Title` / `btn2Title` | `string` | "How to disable" / "I have disabled". |
+| `howToTitle` / `howToSteps` | `string` / `Array<{ title, description }>` | Instructions screen. |
+| `howToImageURL` | `string` | Optional illustration. Omit to hide it. |
+| `goBackButtonTitle` | `string` | Returns to the first screen. |
+| `closeLabel` | `string` | Accessible label for the close button. |
+
+### Callbacks
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `onDetected` | `(isAdBlocked: boolean) => void` | Fires when detection completes. |
+| `onDismiss` | `() => void` | Fires when the visitor dismisses. |
+| `render` | `(props) => ReactNode` | Replace the bundled modal entirely. |
+
+## Theming
+
+Colours are CSS custom properties, so you can theme without overriding rules:
+
+```tsx
+<AdblockDetector
+  config={{
+    colorScheme: "dark",
+    theme: {
+      primary: "#22c55e",
+      primaryText: "#04140a",
+      background: "#0b0f17",
+      radius: "20px",
+      maxWidth: "440px",
+    },
+  }}
+/>
+```
+
+Or in CSS:
+
+```css
+.rad-overlay {
+  --rad-primary: #22c55e;
+  --rad-bg: #0b0f17;
 }
 ```
 
----
+| Property | Purpose |
+| --- | --- |
+| `--rad-bg` / `--rad-fg` / `--rad-muted` | Surface and text |
+| `--rad-primary` / `--rad-primary-fg` | Primary button |
+| `--rad-secondary` / `--rad-secondary-fg` | Secondary button, step cards |
+| `--rad-overlay` | Backdrop |
+| `--rad-radius` / `--rad-max-width` | Shape and size |
 
-## ⚙️ Configuration
+## Bring your own UI
 
-The `AdblockDetector` component accepts a `config` prop of type `Partial<IAdBlockerConfig>`.
+`render` replaces the modal completely — the stylesheet is then optional:
 
-### Default Config
-
-```ts
-const defaultConfig = {
-  persistent: false,
-  title: "AdBlocker Detected",
-  howToTitle: "How to Disable the Adblocker",
-  description:
-    "We noticed you're using an ad blocker. Please disable it so we can keep the site running.",
-  btn1Title: "How to disable adblocker",
-  btn2Title: "I have disabled my adblocker",
-  goBackButtonTitle: "Go Back",
-  howToImageURL:
-    "https://github.com/faraasat/react-adblocker-detect/blob/main/images/demo.gif",
-  howToSteps: [
-    {
-      title: "Step 1: Click on the Extensions Icon",
-      description:
-        "At the top-right of your browser, click the puzzle piece icon to see all extensions.",
-    },
-    {
-      title: "Step 2: Open AdBlock Settings",
-      description:
-        "Click the AdBlock or AdBlock Plus icon from the list. Then click the settings gear or options.",
-    },
-    {
-      title: "Step 3: Pause or Whitelist",
-      description: `Choose "Pause on this site" or "Don't run on this site" depending on your extension.`,
-    },
-    {
-      title: "Step 4: Refresh the Page",
-      description:
-        "Reload the page to check if the content is now visible. Enjoy the experience!",
-    },
-  ],
-  pollingTime: undefined, // in milliseconds
-  initialInterval: 200, // delay before showing the modal initially
-  persistSetting: true, // store detection state in localStorage
-};
+```tsx
+<AdblockDetector
+  config={{
+    render: ({ dismiss, recheck }) => (
+      <aside className="my-banner">
+        Please disable your ad blocker.
+        <button onClick={() => recheck()}>I have disabled it</button>
+        <button onClick={dismiss}>Dismiss</button>
+      </aside>
+    ),
+  }}
+/>
 ```
 
----
+## Accessibility
 
-## 🪝 Hook
+The bundled modal is a real dialog, not a styled `div`:
 
-### `useAdblock(shouldDetect: boolean): boolean`
+- `role="dialog"` with `aria-modal`, labelled by its heading and described by
+  its body copy.
+- **Focus is trapped** while it is open, and restored to the previously focused
+  element on close.
+- **Escape** closes it when `dismissible` (handled on the document, so it works
+  wherever focus is).
+- Background scrolling is locked while it is open, and restored after.
+- Honours `prefers-reduced-motion` and `prefers-color-scheme`.
 
-A custom React hook that returns `true` if adblocker is detected. Used internally by `AdblockDetector`, but can be used separately if you need raw detection logic.
+## Responsive
 
----
+On screens narrower than 480px the dialog becomes a bottom sheet: full width,
+rounded at the top, respecting `env(safe-area-inset-bottom)`, with buttons
+stacked full width and `100dvh`-aware height so mobile browser chrome does not
+clip it.
 
-## 💡 Modal Behavior
+## Styling
 
-- **Closeable**: If `persistent: false`, the modal can be closed after user claims they disabled adblock.
-- **Persistent**: If `persistent: true`, the modal keeps rechecking adblock status at intervals using `pollingTime`.
+```tsx
+import "react-adblocker-detect/style.css";
+```
 
----
+| Class | Element |
+| --- | --- |
+| `.rad-overlay` | Backdrop (carries the theme properties) |
+| `.rad-modal` | Dialog panel |
+| `.rad-title` / `.rad-desc` | Heading and body copy |
+| `.rad-btn--primary` / `.rad-btn--secondary` | Buttons |
+| `.rad-close` | Close control |
+| `.rad-steps` / `.rad-step` | Instruction list |
 
-## 🗃 Local Storage
+## Contributing
 
-This library stores a flag (`rad_adblocker`) in `localStorage` to avoid showing the modal again unnecessarily when not in persistent mode.
+Issues and pull requests are welcome.
 
----
+```bash
+git clone https://github.com/faraasat/react-adblocker-detect.git
+cd react-adblocker-detect
+npm install
+npm test          # vitest
+npm run typecheck # tsc --noEmit
+npm run build     # tsup
+```
 
-## 🧑‍🎓 Credits
+To run the demo site against your local build:
 
-Developed with ❤️ by **[Farasat Ali](https://github.com/faraasat)**
-Feedback and contributions welcome!
+```bash
+npm run example:dev
+```
+
+Releases are manual — nothing publishes on a push to `main`. Maintainers run
+the **Release** workflow from the Actions tab.
+
+## Privacy
+
+The published package contains **no telemetry**. The demo site at
+[faraasat.github.io/react-adblocker-detect](https://faraasat.github.io/react-adblocker-detect/) uses
+Google Analytics and Aptabase; the library itself never phones home.
+
+## License
+
+[MIT](./LICENSE) © [Farasat Ali](https://github.com/faraasat)

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" width="1200" height="320" role="img" aria-label="react-adblocker-detect">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1a0a0a"/><stop offset="100%" stop-color="#2b0f14"/></linearGradient>
+    <linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff6b6b"/><stop offset="100%" stop-color="#c92a2a"/></linearGradient>
+    <linearGradient id="txt" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#ffc9c9"/></linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%"><stop offset="0%" stop-color="#ff6b6b" stop-opacity=".35"/><stop offset="100%" stop-color="#ff6b6b" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="320" rx="24" fill="url(#bg)"/>
+  <circle cx="990" cy="160" r="230" fill="url(#glow)"/>
+  <g transform="translate(74 92)">
+    <path d="M44 0 L88 18 V52 C88 88 66 116 44 136 C22 116 0 88 0 52 V18 Z" fill="url(#sh)"/>
+    <path d="M22 44 h44 v14 h-44 z" fill="#fff" opacity=".95" transform="rotate(-45 44 51)"/>
+  </g>
+  <text x="196" y="156" font-family="ui-sans-serif,-apple-system,Segoe UI,Inter,Helvetica,Arial" font-size="52" font-weight="800" fill="url(#txt)">react-adblocker-detect</text>
+  <text x="196" y="202" font-family="ui-sans-serif,-apple-system,Segoe UI,Inter,Helvetica,Arial" font-size="25" fill="#e8b3b3">Detect ad blockers in React and ask politely, with a built-in modal</text>
+  <text x="196" y="244" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="19" fill="#b58686">npm i react-adblocker-detect</text>
+</svg>
