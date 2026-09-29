@@ -24,6 +24,56 @@
 
 ---
 
+## Upgrading from 1.x
+
+`2.0.0` rewrites the modal for accessibility, theming and responsiveness, and
+replaces the network-only detection. Most integrations need no code change —
+`<AdblockDetector />` and `useAdblock()` keep their signatures — but two things
+will affect you.
+
+### Custom CSS needs remapping
+
+Every class was renamed. If you styled the modal yourself:
+
+| 1.x | 2.0 |
+| --- | --- |
+| `.rad-modal` (backdrop) | `.rad-overlay` |
+| `.modal` | `.rad-modal` |
+| `.modal2` | `.rad-modal--scroll` |
+| `.modal-buttons` | `.rad-actions` |
+| `.primary-btn` | `.rad-btn--primary` |
+| `.secondary-btn` | `.rad-btn--secondary` |
+| `.back-btn` | `.rad-btn--primary` (the back control is a normal button now) |
+| `.modal-step` | `.rad-steps` |
+| `.step` | `.rad-step` |
+| `.step-title` | `.rad-step__title` |
+| `.step-desc` | `.rad-step__desc` |
+| `.step-content` | `.rad-step__body` |
+
+Most overrides are no longer necessary: colours are CSS custom properties, so
+prefer `theme` or the `--rad-*` variables over rewriting rules.
+
+### Detection changed
+
+Detection now runs a DOM bait check as well as the network probe, and in the
+default `"both"` mode a *failed* request no longer counts on its own — only an
+explicit redirect does. This removes false positives for visitors who are
+offline, behind a firewall, or on a captive portal.
+
+To keep the old behaviour exactly:
+
+```tsx
+<AdblockDetector config={{ detection: { method: "request" } }} />
+```
+
+### Smaller notes
+
+- `howToImageURL` defaults to empty, so the illustration is skipped unless you
+  supply one. The old default pointed at a GitHub `/blob/` page, which serves
+  HTML rather than an image and never rendered.
+- `persistSetting: false` now genuinely skips `localStorage`; previously the
+  option was ignored and a dismissal was always written.
+
 ## Why
 
 Ad-blocked visitors quietly cost you revenue, and most detection snippets
