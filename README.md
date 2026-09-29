@@ -39,7 +39,7 @@ Every class was renamed. If you styled the modal yourself:
 | --- | --- |
 | `.rad-modal` (backdrop) | `.rad-overlay` |
 | `.modal` | `.rad-modal` |
-| `.modal2` | `.rad-modal--scroll` |
+| `.modal2` | *(gone — `.rad-modal` scrolls on its own)* |
 | `.modal-buttons` | `.rad-actions` |
 | `.primary-btn` | `.rad-btn--primary` |
 | `.secondary-btn` | `.rad-btn--secondary` |

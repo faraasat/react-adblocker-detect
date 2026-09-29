@@ -201,7 +201,7 @@ export const AdblockerModal: React.FC<{
       }}
     >
       <div
-        className={`rad-modal${showHowTo ? " rad-modal--scroll" : ""}`}
+        className="rad-modal"
         role="dialog"
         aria-modal="true"
         aria-labelledby={ids.current.title}
