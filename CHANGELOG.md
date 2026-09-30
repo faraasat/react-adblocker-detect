@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1](https://github.com/faraasat/react-adblocker-detect/compare/v2.0.0...v2.0.1) (2026-09-30)
+
+
+### Features
+
+* syntax-highlighted code and a top nav on the demo ([0daa6b7](https://github.com/faraasat/react-adblocker-detect/commit/0daa6b7e9f7bad250bfb8284f9de9af841a45583))
+
+
+### Bug Fixes
+
+* detection failed to notice real ad blockers ([3533ee6](https://github.com/faraasat/react-adblocker-detect/commit/3533ee63d38b0cb1984c4e09509ad0c1e0d302e8))
+
 ## [2.0.0](https://github.com/faraasat/react-adblocker-detect/compare/v1.0.6...v2.0.0) (2026-09-30)
 
 
