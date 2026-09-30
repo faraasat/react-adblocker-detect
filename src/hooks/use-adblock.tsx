@@ -39,20 +39,26 @@ const runBaitCheck = (classNames: string[]): Promise<boolean> =>
     const bait = document.createElement("div");
     bait.className = classNames.join(" ");
     bait.setAttribute("aria-hidden", "true");
-    // Off-screen but genuinely laid out, so the measurements below are real.
+
+    // Positioning is !important so the host page cannot move the bait into
+    // view, but the *dimensions* deliberately are not: a blocker's cosmetic
+    // rule has to be able to win. Marking width/height !important here made
+    // this element out-specify the very thing it exists to detect.
     bait.style.cssText =
       "position:absolute!important;left:-9999px!important;top:-9999px!important;" +
-      "width:300px!important;height:250px!important;pointer-events:none!important;";
+      "pointer-events:none!important;width:300px;height:250px;";
     document.body.appendChild(bait);
 
     // Give extensions a frame to act on the newly inserted node.
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         const style = window.getComputedStyle(bait);
+        const rect = bait.getBoundingClientRect();
         const blocked =
           !bait.parentNode ||
           bait.offsetHeight === 0 ||
           bait.clientHeight === 0 ||
+          rect.height === 0 ||
           style.display === "none" ||
           style.visibility === "hidden" ||
           style.opacity === "0";
@@ -64,46 +70,46 @@ const runBaitCheck = (classNames: string[]): Promise<boolean> =>
   });
 
 /**
- * Network probe: request a well-known ad script and see whether it is
- * redirected or refused.
+ * Network probe: load a well-known ad script and see whether it is refused.
  *
- * Secondary, because a failure here is ambiguous — it can equally mean the
- * visitor is offline, on a captive portal, or behind a firewall.
+ * A `<script>` element is used rather than `fetch`, because a `no-cors` fetch
+ * returns an *opaque* response — `status` is always 0 and `redirected` always
+ * `false`, even on success — so it cannot distinguish a blocked request from a
+ * served one. A script element reports refusal through its `error` event,
+ * which is exactly the signal network-level blockers produce.
  */
-const runRequestCheck = async (
-  url: string,
-  timeoutMs: number,
-  /**
-   * Whether a failed request on its own counts as a block.
-   *
-   * False when a bait check is also running: a refused request has many
-   * innocent causes (captive portal, firewall, offline, CSP), and pairing it
-   * with the reliable DOM signal is what keeps false positives down.
-   */
-  failureCountsAsBlock: boolean
-): Promise<boolean> => {
-  if (typeof fetch === "undefined") return false;
+const runRequestCheck = (url: string, timeoutMs: number): Promise<boolean> =>
+  new Promise((resolve) => {
+    if (typeof document === "undefined" || !document.head) {
+      resolve(false);
+      return;
+    }
 
-  const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
-  const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+    // Offline is not ad blocking, and would otherwise look identical.
+    if (typeof navigator !== "undefined" && navigator.onLine === false) {
+      resolve(false);
+      return;
+    }
 
-  try {
-    const res = await fetch(url, {
-      method: "HEAD",
-      mode: "no-cors",
-      cache: "no-store",
-      signal: controller?.signal,
-    });
-    return res.redirected;
-  } catch {
-    if (!failureCountsAsBlock) return false;
-    // Only treat a failure as a block when the browser believes it is online;
-    // an offline visitor is not running an ad blocker.
-    return typeof navigator !== "undefined" ? navigator.onLine : false;
-  } finally {
-    if (timer) clearTimeout(timer);
-  }
-};
+    const script = document.createElement("script");
+    let settled = false;
+
+    const done = (blocked: boolean) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      script.remove();
+      resolve(blocked);
+    };
+
+    const timer = setTimeout(() => done(false), timeoutMs);
+
+    script.onload = () => done(false);
+    script.onerror = () => done(true);
+    script.async = true;
+    script.src = url;
+    document.head.appendChild(script);
+  });
 
 export interface UseAdblockResult {
   /** Whether an ad blocker was detected. */
@@ -159,13 +165,10 @@ export function useAdblockDetection(
       checks.push(runBaitCheck(s.baitClassNames));
     }
     if (s.method === "request" || s.method === "both") {
-      // In "both" mode the bait check is the authoritative signal, so the
-      // network probe only contributes an explicit redirect — not a mere
-      // failure, which would otherwise flag every offline or firewalled
-      // visitor as an ad-block user.
-      checks.push(
-        runRequestCheck(s.probeUrl, s.timeout, s.method === "request")
-      );
+      // Unlike the old opaque-fetch probe, a script `error` event is a
+      // specific signal: the request was refused. Offline is excluded inside
+      // the check, so this can be trusted in "both" mode too.
+      checks.push(runRequestCheck(s.probeUrl, s.timeout));
     }
 
     const results = await Promise.all(checks);

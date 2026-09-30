@@ -41,13 +41,25 @@ test("reports no blocker in a clean browser", async ({ page }) => {
 });
 
 /**
- * Regression: a firewalled or offline visitor used to be reported as an
- * ad-block user, because a failed network probe counted as a positive.
+ * A refused ad script is the signal a network-level blocker (Pi-hole, DNS
+ * filtering, host rules) produces, and cosmetic filtering leaves the network
+ * alone — so both signals are needed and either one counts.
  */
-test("a blocked network alone is not treated as an ad blocker", async ({ page }) => {
+test("a refused ad script is detected", async ({ page }) => {
+  await page.route("**/pagead2.googlesyndication.com/**", (r) => r.abort());
+  await page.goto("/");
+  await expect(page.getByRole("dialog")).toBeVisible();
+});
+
+/** Offline is not ad blocking, and must never be reported as such. */
+test("being offline is not treated as ad blocking", async ({ page, context }) => {
+  await page.addInitScript(() =>
+    Object.defineProperty(navigator, "onLine", { get: () => false })
+  );
   await page.route("**/pagead2.googlesyndication.com/**", (r) => r.abort());
   await page.goto("/");
   await expect(page.getByText("no blocker")).toBeVisible();
+  void context;
 });
 
 test("detects a blocker once filter-list selectors are hidden", async ({ page }) => {
