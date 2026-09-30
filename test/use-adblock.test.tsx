@@ -23,12 +23,34 @@ const setBaitBlocked = (blocked: boolean) => {
       return blocked ? 0 : 250;
     },
   });
+  // jsdom returns an all-zero rect for every element, which the detector would
+  // read as "collapsed". Mirror the mocked dimensions here too.
+  HTMLElement.prototype.getBoundingClientRect = function () {
+    const h = blocked ? 0 : 250;
+    return { x: 0, y: 0, top: 0, left: 0, right: 300, bottom: h, width: blocked ? 0 : 300, height: h, toJSON: () => ({}) } as DOMRect;
+  };
+};
+
+/**
+ * The network probe injects a <script> and listens for load/error. Intercept
+ * the insertion so tests can decide which fires, without real network access.
+ */
+const setScriptBlocked = (blocked: boolean) => {
+  const original = document.head.appendChild.bind(document.head);
+  vi.spyOn(document.head, "appendChild").mockImplementation((node: never) => {
+    const el = node as unknown as HTMLScriptElement;
+    if (el.tagName === "SCRIPT") {
+      queueMicrotask(() => (blocked ? el.onerror?.(new Event("error")) : el.onload?.(new Event("load"))));
+      return node;
+    }
+    return original(node);
+  });
 };
 
 beforeEach(() => {
   localStorage.clear();
   setBaitBlocked(false);
-  vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ redirected: false } as Response));
+  setScriptBlocked(false);
 });
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -37,9 +59,9 @@ afterEach(() => {
 
 describe("useAdblockDetection", () => {
   it("does not run when disabled", async () => {
-    renderHook(() => useAdblockDetection({ enabled: false }));
+    const { result } = renderHook(() => useAdblockDetection({ enabled: false }));
     await new Promise((r) => setTimeout(r, 20));
-    expect(fetch).not.toHaveBeenCalled();
+    expect(result.current.isChecked).toBe(false);
   });
 
   it("reports no blocker when neither signal fires", async () => {
@@ -54,40 +76,41 @@ describe("useAdblockDetection", () => {
     await waitFor(() => expect(result.current.isAdBlocked).toBe(true));
   });
 
-  it("reports a blocker when the probe is redirected", async () => {
-    vi.mocked(fetch).mockResolvedValue({ redirected: true } as Response);
+  // Regression: the old probe used fetch with mode:"no-cors", whose response
+  // is opaque — status is always 0 and redirected always false, even when the
+  // request succeeds. The check could therefore never report a block.
+  it("reports a blocker when the ad script is refused", async () => {
+    setScriptBlocked(true);
     const { result } = renderHook(() => useAdblockDetection({ method: "request" }));
     await waitFor(() => expect(result.current.isAdBlocked).toBe(true));
   });
 
-  it("ignores a merely failed probe in 'both' mode", async () => {
-    // A refused request has innocent causes; the bait signal is authoritative.
-    vi.spyOn(navigator, "onLine", "get").mockReturnValue(true);
-    vi.mocked(fetch).mockRejectedValue(new Error("firewall"));
+  it("reports no blocker when the ad script loads", async () => {
+    setScriptBlocked(false);
+    const { result } = renderHook(() => useAdblockDetection({ method: "request" }));
+    await waitFor(() => expect(result.current.isChecked).toBe(true));
+    expect(result.current.isAdBlocked).toBe(false);
+  });
+
+  it("counts a refused script in the default combined mode", async () => {
+    // A script error is specific enough to trust, unlike an opaque fetch
+    // failure, so "both" no longer ignores it.
+    setScriptBlocked(true);
     const { result } = renderHook(() => useAdblockDetection({ method: "both" }));
-    await waitFor(() => expect(result.current.isChecked).toBe(true));
-    expect(result.current.isAdBlocked).toBe(false);
-  });
-
-  it("treats a rejected probe as blocked only while online", async () => {
-    vi.spyOn(navigator, "onLine", "get").mockReturnValue(true);
-    vi.mocked(fetch).mockRejectedValue(new Error("blocked"));
-    const { result } = renderHook(() => useAdblockDetection({ method: "request" }));
     await waitFor(() => expect(result.current.isAdBlocked).toBe(true));
-  });
-
-  it("does not report a blocker when the probe fails while offline", async () => {
-    vi.spyOn(navigator, "onLine", "get").mockReturnValue(false);
-    vi.mocked(fetch).mockRejectedValue(new Error("offline"));
-    const { result } = renderHook(() => useAdblockDetection({ method: "request" }));
-    await waitFor(() => expect(result.current.isChecked).toBe(true));
-    expect(result.current.isAdBlocked).toBe(false);
   });
 
   it("skips the network entirely in bait-only mode", async () => {
     const { result } = renderHook(() => useAdblockDetection({ method: "bait" }));
     await waitFor(() => expect(result.current.isChecked).toBe(true));
-    expect(fetch).not.toHaveBeenCalled();
+    expect(document.querySelector("script[src*='adsbygoogle']")).toBeNull();
+  });
+
+  it("does not treat being offline as ad blocking", async () => {
+    vi.spyOn(navigator, "onLine", "get").mockReturnValue(false);
+    const { result } = renderHook(() => useAdblockDetection({ method: "request" }));
+    await waitFor(() => expect(result.current.isChecked).toBe(true));
+    expect(result.current.isAdBlocked).toBe(false);
   });
 
   it("cleans up its bait element", async () => {

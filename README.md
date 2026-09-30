@@ -127,17 +127,15 @@ Two independent signals, combined:
 
 | Method | How | Trade-off |
 | --- | --- | --- |
-| **bait** | Inserts an ad-shaped element and checks whether it was hidden or collapsed. | Reliable. Needs no network, so it is accurate offline, behind a strict CSP, and on corporate proxies. |
-| **request** | `HEAD`s a well-known ad script URL and looks for a redirect or refusal. | Catches network-level blockers (Pi-hole, DNS filtering) that leave the DOM alone. |
+| **bait** | Inserts an ad-shaped element and checks whether a filter list hid or collapsed it. | Catches cosmetic filtering (uBlock Origin, AdBlock Plus). Needs no network, so it works offline and behind a strict CSP. |
+| **request** | Loads a well-known ad script and listens for its `error` event. | Catches network-level blocking (Pi-hole, DNS filtering, host rules) that leaves the DOM alone. |
 
-Default is `"both"`, where the **bait check is authoritative**: the network
-probe contributes only an explicit redirect, never a mere failure. That matters
-because a refused request has plenty of innocent causes — captive portals,
-firewalls, offline, strict CSP — and counting those as a block is the main
-source of false positives in naive detectors.
+Default is `"both"` — a block is reported if either signal fires. The two catch
+genuinely different things, so both are needed: cosmetic filtering leaves the
+network alone, and DNS-level blocking leaves the DOM alone.
 
-In `"request"`-only mode a failure does count, but only while the browser
-reports itself **online**.
+Offline visitors are excluded explicitly, so "no connection" is never mistaken
+for ad blocking.
 
 ```tsx
 <AdblockDetector config={{ detection: { method: "bait" } }} />
